@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDX69NyGeGP6dfy5nLp7Oy8BLvy1g3d3FE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>492841318845</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mycompany.roamingredriver</string>
+	<key>PROJECT_ID</key>
+	<string>roaming-red-river</string>
+	<key>STORAGE_BUCKET</key>
+	<string>roaming-red-river.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:492841318845:ios:5e9f4dca8bf67d0c483ad4</string>
+</dict>
+</plist>

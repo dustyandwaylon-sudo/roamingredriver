@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492841318845",
+    "project_id": "roaming-red-river",
+    "storage_bucket": "roaming-red-river.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492841318845:android:46669465b1b7cd25483ad4",
+        "android_client_info": {
+          "package_name": "com.mycompany.roamingredriver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCiC7eqmcTPSTBwmV0u1YjjDXc3SgBVf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
