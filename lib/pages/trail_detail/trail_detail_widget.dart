@@ -699,7 +699,7 @@ class _TrailDetailWidgetState extends State<TrailDetailWidget> {
                                     ),
                                     onPressed: () async {
                                       FFAppState().isOfflineMode =
-                                          !FFAppState().isOfflineMode;
+                                          !(FFAppState().isOfflineMode ?? true);
                                       FFAppState().update(() {});
                                     },
                                   ),

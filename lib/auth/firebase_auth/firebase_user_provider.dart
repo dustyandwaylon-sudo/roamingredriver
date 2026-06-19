@@ -23,7 +23,13 @@ class RoamingRedRiverFirebaseUser extends BaseAuthUser {
   Future? delete() => user?.delete();
 
   @override
-  Future? updateEmail(String email) => user?.verifyBeforeUpdateEmail(email);
+  Future? updateEmail(String email) async {
+    try {
+      await user?.updateEmail(email);
+    } catch (_) {
+      await user?.verifyBeforeUpdateEmail(email);
+    }
+  }
 
   @override
   Future? updatePassword(String newPassword) async {
