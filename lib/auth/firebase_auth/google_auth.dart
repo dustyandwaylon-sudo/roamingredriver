@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-final _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
-
 Future<UserCredential?> googleSignInFunc() async {
   if (kIsWeb) {
     // Once signed in, return the UserCredential
@@ -11,13 +9,13 @@ Future<UserCredential?> googleSignInFunc() async {
   }
 
   await signOutWithGoogle().catchError((_) => null);
-  final auth = await (await _googleSignIn.signIn())?.authentication;
-  if (auth == null) {
-    return null;
-  }
+  final account = await GoogleSignIn.instance.authenticate(
+    scopeHint: ['profile', 'email'],
+  );
+  final auth = await account.authentication;
   final credential = GoogleAuthProvider.credential(
-      idToken: auth.idToken, accessToken: auth.accessToken);
+      idToken: auth.idToken);
   return FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-Future signOutWithGoogle() => _googleSignIn.signOut();
+Future signOutWithGoogle() => GoogleSignIn.instance.signOut();

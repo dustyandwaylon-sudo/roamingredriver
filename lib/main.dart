@@ -9,6 +9,7 @@ import 'auth/firebase_auth/auth_util.dart';
 import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,11 @@ void main() async {
   usePathUrlStrategy();
 
   await initFirebase();
+  try {
+    await GoogleSignIn.instance.initialize();
+  } catch (e) {
+    print('Error initializing GoogleSignIn: $e');
+  }
 
   await FlutterFlowTheme.initialize();
 
@@ -42,8 +48,8 @@ class _MyAppState extends State<MyApp> {
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
-  String getRoute([RouteMatch? routeMatch]) {
-    final RouteMatch lastMatch =
+  String getRoute([RouteMatchBase? routeMatch]) {
+    final RouteMatchBase lastMatch =
         routeMatch ?? _router.routerDelegate.currentConfiguration.last;
     final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
         ? lastMatch.matches
