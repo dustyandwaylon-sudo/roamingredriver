@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'admin_dashboard_model.dart';
+import '/custom_code/actions/update_weather.dart';
 export 'admin_dashboard_model.dart';
 
 class AdminDashboardWidget extends StatefulWidget {
@@ -34,6 +35,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AdminDashboardModel());
+    Future.delayed(Duration.zero, () => updateWeather());
   }
 
   @override
@@ -290,18 +292,37 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: wrapWithModel(
-                            model: _model.statCardModel3,
-                            updateCallback: () => safeSetState(() {}),
-                            child: StatCardWidget(
-                              icon: Icon(
-                                Icons.cloud_rounded,
-                                size: 16.0,
-                              ),
-                              color: FlutterFlowTheme.of(context).info,
-                              label: 'Weather',
-                              value: '${'72'}°F',
-                            ),
+                          child: StreamBuilder<List<WeatherCacheRecord>>(
+                            stream: queryWeatherCacheRecord(limit: 1),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                              List<WeatherCacheRecord> statCardWeatherRecordList =
+                                  snapshot.data!;
+                              final tempStr = statCardWeatherRecordList.isNotEmpty
+                                  ? '${statCardWeatherRecordList.first.temperature.round()}°F'
+                                  : '--°F';
+                              return wrapWithModel(
+                                model: _model.statCardModel3,
+                                updateCallback: () => safeSetState(() {}),
+                                child: StatCardWidget(
+                                  icon: Icon(
+                                    Icons.cloud_rounded,
+                                    size: 16.0,
+                                  ),
+                                  color: FlutterFlowTheme.of(context).info,
+                                  label: 'Weather',
+                                  value: tempStr,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ].divide(SizedBox(width: 16.0)),
