@@ -86,8 +86,7 @@ class _TrailExplorerWidgetState extends State<TrailExplorerWidget> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            24.0, 16.0, 24.0, 16.0),
+                     padding: EdgeInsetsDirectional.fromSTEB(12.0, 8.0, 12.0, 8.0), // Clean up outer margins
                         child: Container(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -179,62 +178,220 @@ class _TrailExplorerWidgetState extends State<TrailExplorerWidget> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: wrapWithModel(
-                                      model: _model.textFieldModel,
-                                      updateCallback: () => safeSetState(() {}),
-                                      child: TextFieldWidget(
-                                        label: '',
-                                        labelPresent: false,
-                                        helper: '',
-                                        helperPresent: false,
-                                        hint:
-                                            'Search trails, arches, or views...',
-                                        value: FFAppState().searchQuery,
-                                        onChange: '',
-                                        onSubmit: '',
-                                        leadingIcon: Icon(
-                                          Icons.search_rounded,
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: wrapWithModel(
+                                          model: _model.textFieldModel,
+                                          updateCallback: () => safeSetState(() {}),
+                                          child: TextFieldWidget(
+                                            label: '',
+                                            labelPresent: false,
+                                            helper: '',
+                                            helperPresent: false,
+                                            hint:
+                                                'Search trails, arches, or views...',
+                                            value: FFAppState().searchQuery,
+                                            onChange: '',
+                                            onSubmit: '',
+                                            onChanged: (value) {
+                                              FFAppState().searchQuery = value;
+                                            },
+                                            onSubmitted: (value) {
+                                              FFAppState().searchQuery = value;
+                                              FFAppState().addRecentSearch(value);
+                                            },
+                                            leadingIcon: Icon(
+                                              Icons.search_rounded,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              size: 16.0,
+                                            ),
+                                            leadingIconPresent: true,
+                                            trailingIconPresent:
+                                                FFAppState().searchQuery.isNotEmpty,
+                                            trailingIcon: IconButton(
+                                              splashRadius: 20.0,
+                                              padding: EdgeInsets.zero,
+                                              icon: Icon(
+                                                Icons.close_rounded,
+                                                size: 18.0,
+                                              ),
+                                              onPressed: () {
+                                                FFAppState().searchQuery = '';
+                                              },
+                                            ),
+                                            variant: 'filled',
+                                            error: false,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 48.0,
+                                        height: 48.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .alternate,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        alignment: AlignmentDirectional(0.0, 0.0),
+                                        child: Icon(
+                                          Icons.tune_rounded,
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
-                                          size: 16.0,
+                                          size: 20.0,
                                         ),
-                                        leadingIconPresent: true,
-                                        trailingIconPresent: false,
-                                        variant: 'filled',
-                                        error: false,
+                                      ),
+                                    ].divide(SizedBox(width: 16.0)),
+                                  ),
+                                  if (FFAppState().recentSearches.isNotEmpty)
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Text(
+                                                'Recent searches',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodySmall
+                                                    .override(
+                                                      font: GoogleFonts.roboto(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall
+                                                                .fontStyle,
+                                                      ),
+                                                      color: FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryText,
+                                                      letterSpacing: 0.0,
+                                                    ),
+                                              ),
+                                              Spacer(),
+                                              InkWell(
+                                                onTap: () {
+                                                  FFAppState()
+                                                      .clearRecentSearches();
+                                                },
+                                                child: Text(
+                                                  'Clear',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodySmall
+                                                      .override(
+                                                        font: GoogleFonts.roboto(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodySmall
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodySmall
+                                                                  .fontStyle,
+                                                        ),
+                                                        color: FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Wrap(
+                                            spacing: 8.0,
+                                            runSpacing: 8.0,
+                                            children: FFAppState()
+                                                .recentSearches
+                                                .map(
+                                                  (search) => InkWell(
+                                                    onTap: () {
+                                                      FFAppState().searchQuery =
+                                                          search;
+                                                      FFAppState()
+                                                          .addRecentSearch(search);
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary10,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                999.0),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  12.0,
+                                                                  8.0,
+                                                                  12.0,
+                                                                  8.0),
+                                                      child: Text(
+                                                        search,
+                                                        style: FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .override(
+                                                              font: GoogleFonts.roboto(
+                                                                fontWeight:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodySmall
+                                                                        .fontWeight,
+                                                                fontStyle:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodySmall
+                                                                        .fontStyle,
+                                                              ),
+                                                              color: FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primaryText,
+                                                              letterSpacing: 0.0,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ].divide(SizedBox(height: 8.0)),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: 48.0,
-                                    height: 48.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    alignment: AlignmentDirectional(0.0, 0.0),
-                                    child: Icon(
-                                      Icons.tune_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                ].divide(SizedBox(width: 16.0)),
+                                ].divide(SizedBox(height: 12.0)),
                               ),
                             ].divide(SizedBox(height: 16.0)),
                           ),
@@ -496,74 +653,80 @@ class _TrailExplorerWidgetState extends State<TrailExplorerWidget> {
                                       ),
                                     ],
                                   ),
+                                  Builder(
+                                    builder: (context) {
+                                      final filteredTrails =
+                                          functions.filteredTrails(
+                                        trailExplorerTrailsRecordList.toList(),
+                                        FFAppState().filterDifficulty,
+                                        FFAppState().searchQuery,
+                                      );
 
-                                  // ff_lite_listview_data:${filtered_trails}
-                                  StreamBuilder<List<TrailsRecord>>(
-                                    stream: queryTrailsRecord(),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: CircularProgressIndicator(),
+                                      if (filteredTrails.isEmpty) {
+                                        return Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 8.0, 0.0, 0.0),
+                                          child: Text(
+                                            'No trails match your search.',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.roboto(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
                                         );
                                       }
-                                      List<TrailsRecord>
-                                          listViewTrailsRecordList =
-                                          snapshot.data!;
 
-                                      return Builder(
-                                        builder: (context) {
-                                          final item =
-                                              listViewTrailsRecordList.toList();
-
-                                          return ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: item.length,
-                                            itemBuilder: (context, itemIndex) {
-                                              final itemItem = item[itemIndex];
-                                              return InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  // ff_lite_route_params:trail_id:item.id
-
-                                                  context.goNamed(
-                                                    TrailDetailWidget.routeName,
-                                                    queryParameters: {
-                                                      'trailId': serializeParam(
-                                                        'item.id',
-                                                        ParamType.String,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                },
-                                                child: TrailCard2Widget(
-                                                  key: Key(
-                                                      'Key677_${itemIndex}_of_${item.length}'),
-                                                  difficulty:
-                                                      itemItem.difficulty,
-                                                  safety: itemItem.safetyStatus,
-                                                  name: itemItem.name,
-                                                  rating: itemItem.rating
-                                                      .toString(),
-                                                  length: itemItem.length
-                                                      .toString(),
-                                                  duration: itemItem.duration,
-                                                  elev: itemItem.elevationGain
-                                                      .toString(),
-                                                ),
+                                      return ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: filteredTrails.length,
+                                        itemBuilder: (context, itemIndex) {
+                                          final itemItem = filteredTrails[itemIndex];
+                                          return InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.goNamed(
+                                                TrailDetailWidget.routeName,
+                                                queryParameters: {
+                                                  'trailId': serializeParam(
+                                                    itemItem.reference.id,
+                                                    ParamType.String,
+                                                  ),
+                                                }.withoutNulls,
                                               );
                                             },
+                                            child: TrailCard2Widget(
+                                              key: Key(
+                                                  'Key677_${itemIndex}_of_${filteredTrails.length}'),
+                                              difficulty: itemItem.difficulty,
+                                              safety: itemItem.safetyStatus,
+                                              name: itemItem.name,
+                                              rating: itemItem.rating.toString(),
+                                              length: itemItem.length.toString(),
+                                              duration: itemItem.duration,
+                                              elev: itemItem.elevationGain.toString(),
+                                            ),
                                           );
                                         },
                                       );

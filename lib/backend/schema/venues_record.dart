@@ -65,17 +65,55 @@ class VenuesRecord extends FirestoreRecord {
   bool get isOpen => _isOpen ?? false;
   bool hasIsOpen() => _isOpen != null;
 
+  String? _coerceString(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is String) {
+      return value;
+    }
+    if (value is num || value is bool) {
+      return value.toString();
+    }
+    if (value is GeoPoint) {
+      return '${value.latitude},${value.longitude}';
+    }
+    return value.toString();
+  }
+
+  bool? _coerceBool(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is bool) {
+      return value;
+    }
+    if (value is num) {
+      return value != 0;
+    }
+    if (value is String) {
+      final normalized = value.trim().toLowerCase();
+      if (normalized == 'true') {
+        return true;
+      }
+      if (normalized == 'false') {
+        return false;
+      }
+    }
+    return null;
+  }
+
   void _initializeFields() {
-    _name = snapshotData['name'] as String?;
-    _category = snapshotData['category'] as String?;
-    _priceTier = snapshotData['priceTier'] as String?;
+    _name = _coerceString(snapshotData['name']);
+    _category = _coerceString(snapshotData['category']);
+    _priceTier = _coerceString(snapshotData['priceTier']);
     _rating = castToType<double>(snapshotData['rating']);
-    _geoPoint = snapshotData['geoPoint'] as String?;
-    _address = snapshotData['address'] as String?;
-    _phone = snapshotData['phone'] as String?;
-    _description = snapshotData['description'] as String?;
-    _imageUrl = snapshotData['imageUrl'] as String?;
-    _isOpen = snapshotData['isOpen'] as bool?;
+    _geoPoint = _coerceString(snapshotData['geoPoint']);
+    _address = _coerceString(snapshotData['address']);
+    _phone = _coerceString(snapshotData['phone']);
+    _description = _coerceString(snapshotData['description']);
+    _imageUrl = _coerceString(snapshotData['imageUrl']);
+    _isOpen = _coerceBool(snapshotData['isOpen']);
   }
 
   static CollectionReference get collection =>

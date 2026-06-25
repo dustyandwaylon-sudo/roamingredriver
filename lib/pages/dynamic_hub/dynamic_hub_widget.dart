@@ -810,7 +810,7 @@ class _DynamicHubWidgetState extends State<DynamicHubWidget> {
                                           TrailDetailWidget.routeName,
                                           queryParameters: {
                                             'trailId': serializeParam(
-                                              'item.id',
+                                              itemItem.reference.id,
                                               ParamType.String,
                                             ),
                                           }.withoutNulls,
@@ -903,7 +903,7 @@ class _DynamicHubWidgetState extends State<DynamicHubWidget> {
                                           VenueDetailWidget.routeName,
                                           queryParameters: {
                                             'venueId': serializeParam(
-                                              'item.id',
+                                              itemItem.reference.id,
                                               ParamType.String,
                                             ),
                                           }.withoutNulls,

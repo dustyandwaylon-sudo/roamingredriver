@@ -16,6 +16,8 @@ class TextFieldWidget extends StatefulWidget {
     String? value,
     String? onChange,
     String? onSubmit,
+    this.onChanged,
+    this.onSubmitted,
     this.leadingIcon,
     bool? leadingIconPresent,
     this.trailingIcon,
@@ -44,6 +46,8 @@ class TextFieldWidget extends StatefulWidget {
   final String value;
   final String onChange;
   final String onSubmit;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
   final Widget? leadingIcon;
   final bool leadingIconPresent;
   final Widget? trailingIcon;
@@ -71,6 +75,18 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
 
     _model.inputTextController ??= TextEditingController(text: widget.value);
     _model.inputFocusNode ??= FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(TextFieldWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value &&
+        _model.inputTextController?.text != widget.value) {
+      _model.inputTextController?.text = widget.value;
+      _model.inputTextController?.selection = TextSelection.fromPosition(
+        TextPosition(offset: widget.value.length),
+      );
+    }
   }
 
   @override
@@ -266,6 +282,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                       controller: _model.inputTextController,
                       focusNode: _model.inputFocusNode,
                       obscureText: false,
+                      onChanged: widget.onChanged,
+                      onFieldSubmitted: widget.onSubmitted,
                       decoration: InputDecoration(
                         isDense: true,
                         hintText: valueOrDefault<String>(

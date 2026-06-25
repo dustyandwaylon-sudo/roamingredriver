@@ -66,17 +66,30 @@ class TrailsRecord extends FirestoreRecord {
   String get imageUrl => _imageUrl ?? '';
   bool hasImageUrl() => _imageUrl != null;
 
+  String? _coerceString(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is String) {
+      return value;
+    }
+    if (value is num || value is bool) {
+      return value.toString();
+    }
+    return value.toString();
+  }
+
   void _initializeFields() {
-    _name = snapshotData['name'] as String?;
-    _difficulty = snapshotData['difficulty'] as String?;
+    _name = _coerceString(snapshotData['name']);
+    _difficulty = _coerceString(snapshotData['difficulty']);
     _length = castToType<double>(snapshotData['length']);
     _elevationGain = castToType<int>(snapshotData['elevationGain']);
-    _duration = snapshotData['duration'] as String?;
+    _duration = _coerceString(snapshotData['duration']);
     _rating = castToType<double>(snapshotData['rating']);
-    _safetyStatus = snapshotData['safetyStatus'] as String?;
-    _safetyMessage = snapshotData['safetyMessage'] as String?;
+    _safetyStatus = _coerceString(snapshotData['safetyStatus']);
+    _safetyMessage = _coerceString(snapshotData['safetyMessage']);
     _pathCoordinates = getDataList(snapshotData['pathCoordinates']);
-    _imageUrl = snapshotData['imageUrl'] as String?;
+    _imageUrl = _coerceString(snapshotData['imageUrl']);
   }
 
   static CollectionReference get collection =>

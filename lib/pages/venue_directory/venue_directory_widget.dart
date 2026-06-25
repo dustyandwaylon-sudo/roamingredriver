@@ -163,28 +163,182 @@ class _VenueDirectoryWidgetState extends State<VenueDirectoryWidget> {
                               ),
                             ],
                           ),
-                          wrapWithModel(
-                            model: _model.textFieldModel,
-                            updateCallback: () => safeSetState(() {}),
-                            child: TextFieldWidget(
-                              label: '',
-                              labelPresent: false,
-                              helper: '',
-                              helperPresent: false,
-                              hint: 'Search cabins, food, trails...',
-                              value: FFAppState().searchQuery,
-                              onChange: '',
-                              onSubmit: '',
-                              leadingIcon: Icon(
-                                Icons.search_rounded,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 16.0,
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              wrapWithModel(
+                                model: _model.textFieldModel,
+                                updateCallback: () => safeSetState(() {}),
+                                child: TextFieldWidget(
+                                  label: '',
+                                  labelPresent: false,
+                                  helper: '',
+                                  helperPresent: false,
+                                  hint: 'Search cabins, food, trails...',
+                                  value: FFAppState().searchQuery,
+                                  onChange: '',
+                                  onSubmit: '',
+                                  onChanged: (value) {
+                                    FFAppState().searchQuery = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    FFAppState().searchQuery = value;
+                                    FFAppState().addRecentSearch(value);
+                                  },
+                                  leadingIcon: Icon(
+                                    Icons.search_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    size: 16.0,
+                                  ),
+                                  leadingIconPresent: true,
+                                  trailingIconPresent:
+                                      FFAppState().searchQuery.isNotEmpty,
+                                  trailingIcon: IconButton(
+                                    splashRadius: 20.0,
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(
+                                      Icons.close_rounded,
+                                      size: 18.0,
+                                    ),
+                                    onPressed: () {
+                                      FFAppState().searchQuery = '';
+                                    },
+                                  ),
+                                  variant: 'filled',
+                                  error: false,
+                                ),
                               ),
-                              leadingIconPresent: true,
-                              trailingIconPresent: false,
-                              variant: 'filled',
-                              error: false,
-                            ),
+                              if (FFAppState().recentSearches.isNotEmpty)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 8.0, 0.0, 0.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Recent searches',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  font: GoogleFonts.roboto(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              FFAppState().clearRecentSearches();
+                                            },
+                                            child: Text(
+                                              'Clear',
+                                              style: FlutterFlowTheme.of(context)
+                                                  .bodySmall
+                                                  .override(
+                                                    font: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodySmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodySmall
+                                                              .fontStyle,
+                                                    ),
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primary,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Wrap(
+                                        spacing: 8.0,
+                                        runSpacing: 8.0,
+                                        children: FFAppState()
+                                            .recentSearches
+                                            .map(
+                                              (search) => InkWell(
+                                                onTap: () {
+                                                  FFAppState().searchQuery =
+                                                      search;
+                                                  FFAppState()
+                                                      .addRecentSearch(search);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary10,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            999.0),
+                                                  ),
+                                                  padding:
+                                                      EdgeInsetsDirectional
+                                                          .fromSTEB(
+                                                              12.0,
+                                                              8.0,
+                                                              12.0,
+                                                              8.0),
+                                                  child: Text(
+                                                    search,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodySmall
+                                                        .override(
+                                                          font: GoogleFonts.roboto(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .fontStyle,
+                                                          ),
+                                                          color: FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ].divide(SizedBox(height: 8.0)),
+                                  ),
+                                ),
+                            ].divide(SizedBox(height: 8.0)),
                           ),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -402,70 +556,80 @@ class _VenueDirectoryWidgetState extends State<VenueDirectoryWidget> {
                                     ],
                                   ),
 
-                                  // ff_lite_listview_data:${filtered_venues_list}
-                                  StreamBuilder<List<VenuesRecord>>(
-                                    stream: queryVenuesRecord(),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: CircularProgressIndicator(),
+                                  Builder(
+                                    builder: (context) {
+                                      final filteredVenues =
+                                          functions.filteredVenuesList(
+                                        venueDirectoryVenuesRecordList.toList(),
+                                        FFAppState().searchQuery,
+                                        FFAppState().venueCategoryFilter,
+                                      );
+
+                                      if (filteredVenues.isEmpty) {
+                                        return Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 8.0, 0.0, 0.0),
+                                          child: Text(
+                                            'No places match your search.',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.roboto(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
                                         );
                                       }
-                                      List<VenuesRecord>
-                                          listViewVenuesRecordList =
-                                          snapshot.data!;
 
-                                      return Builder(
-                                        builder: (context) {
-                                          final item =
-                                              listViewVenuesRecordList.toList();
-
-                                          return ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: item.length,
-                                            itemBuilder: (context, itemIndex) {
-                                              final itemItem = item[itemIndex];
-                                              return InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  // ff_lite_route_params:venue_id:item.id
-
-                                                  context.goNamed(
-                                                    VenueDetailWidget.routeName,
-                                                    queryParameters: {
-                                                      'venueId': serializeParam(
-                                                        'item.id',
-                                                        ParamType.String,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                },
-                                                child: VenueCard2Widget(
-                                                  key: Key(
-                                                      'Key969_${itemIndex}_of_${item.length}'),
-                                                  imgDesc: itemItem.name,
-                                                  rating: itemItem.rating
-                                                      .toString(),
-                                                  name: itemItem.name,
-                                                  price: itemItem.priceTier,
-                                                  distance: 'Red River Gorge',
-                                                  category: itemItem.category,
-                                                  isOpen: itemItem.isOpen,
-                                                ),
+                                      return ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: filteredVenues.length,
+                                        itemBuilder: (context, itemIndex) {
+                                          final itemItem = filteredVenues[itemIndex];
+                                          return InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.goNamed(
+                                                VenueDetailWidget.routeName,
+                                                queryParameters: {
+                                                  'venueId': serializeParam(
+                                                    itemItem.reference.id,
+                                                    ParamType.String,
+                                                  ),
+                                                }.withoutNulls,
                                               );
                                             },
+                                            child: VenueCard2Widget(
+                                              key: Key(
+                                                  'Key969_${itemIndex}_of_${filteredVenues.length}'),
+                                              imgDesc: itemItem.name,
+                                              rating: itemItem.rating.toString(),
+                                              name: itemItem.name,
+                                              price: itemItem.priceTier,
+                                              distance: 'Red River Gorge',
+                                              category: itemItem.category,
+                                              isOpen: itemItem.isOpen,
+                                            ),
                                           );
                                         },
                                       );

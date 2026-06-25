@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'section_header_model.dart';
@@ -42,11 +43,35 @@ class _SectionHeaderWidgetState extends State<SectionHeaderWidget> {
     super.dispose();
   }
 
+  void _handleTap() {
+    final target = widget.target.trim().toLowerCase();
+    final normalizedTarget = target.replaceAll('navigate(', '').replaceAll(')', '');
+
+    switch (normalizedTarget) {
+      case 'trail_explorer':
+      case 'trailexplorer':
+        context.goNamed(TrailExplorerWidget.routeName);
+        break;
+      case 'venue_directory':
+      case 'venuedirectory':
+        context.goNamed(VenueDirectoryWidget.routeName);
+        break;
+      case 'dynamic_hub':
+      case 'dynamichub':
+        context.goNamed(DynamicHubWidget.routeName);
+        break;
+      default:
+        debugPrint('Unhandled section header target: ${widget.target}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
-      child: Container(
+      child: InkWell(
+        onTap: _handleTap,
+        mouseCursor: SystemMouseCursors.click,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
